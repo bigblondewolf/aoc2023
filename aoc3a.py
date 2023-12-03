@@ -32,35 +32,21 @@ nums = re.compile("[0-9]+")
 sum_pn = 0 
 for ln, l in enumerate(lines):
     for m in nums.finditer(l):
-        try:
-            span_min = m.span()[0]
-            span_max = m.span()[1]
-            le = lexp(l)
-            # Search adjacent symbol on current line first
-            if is_symbol(le[span_min]) or is_symbol(le[span_max+1]):
-                    sum_pn += int(m.group())
-                    continue
-            if ln > 0:
-                # Check previous lines only after line 1.
-                le = lexp(lines[ln-1])
-                if contains_sym(le[span_min:span_max+2]):
-                    sum_pn += int(m.group())
-            if ln < len(lines)-1:
-                # Check next line only until last but one line.
-                le = lexp(lines[ln+1])
-                if contains_sym(le[span_min:span_max+2]):
-                    sum_pn += int(m.group())
-        except Exception as e:
-            print(ln)
-            print("'{}'".format(l))
-            print("'{}'".format(le))
-            print("Lenght: {}".format(len(l)))
-            print("Lenght: {}".format(len(le)))
-            print(m)
-            print("'{}'".format(le[span_max+2]))
-            raise e
+        span_min = m.span()[0]
+        span_max = m.span()[1]
+        le = lexp(l)
+        # Search adjacent symbol on current line first
+        if is_symbol(le[span_min]) or is_symbol(le[span_max+1]):
+                sum_pn += int(m.group())
+                continue
+        if ln > 0:
+            # Check previous lines only after line 1.
+            le = lexp(lines[ln-1])
+            if contains_sym(le[span_min:span_max+2]):
+                sum_pn += int(m.group())
+        if ln < len(lines)-1:
+            # Check next line only until last but one line.
+            le = lexp(lines[ln+1])
+            if contains_sym(le[span_min:span_max+2]):
+                sum_pn += int(m.group())
 print(sum_pn)
-
-
-
-
